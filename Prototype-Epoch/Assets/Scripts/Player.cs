@@ -4,27 +4,38 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private int speed = 5;
-    public float jumpForce = 20;
-    float velocity;
+    private const int Speed = 5;
+
+    private bool jumpWasPressed;
+
+    private Rigidbody _rigidbody;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        _rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpWasPressed = true;
+        }
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        Vector3 Movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        var movement = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
 
-        this.transform.position += Movement * speed * Time.deltaTime;
+        transform.position += movement * (Speed * Time.deltaTime);
+
+        if (!jumpWasPressed) return;
         
+        _rigidbody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
+        jumpWasPressed = false;
+
     }
 }
