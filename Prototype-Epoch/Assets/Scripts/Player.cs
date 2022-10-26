@@ -5,10 +5,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private const int Speed = 5;
-
-    private bool jumpWasPressed;
-
+    private bool _jumpWasPressed;
     private Rigidbody _rigidbody;
+    
+    [SerializeField]
+    private Transform groundCheckTransform = null;
+    
 
     // Start is called before the first frame update
     private void Start()
@@ -21,7 +23,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            jumpWasPressed = true;
+            _jumpWasPressed = true;
         }
     }
 
@@ -32,10 +34,12 @@ public class Player : MonoBehaviour
 
         transform.position += movement * (Speed * Time.deltaTime);
 
-        if (!jumpWasPressed) return;
+        if (Physics.OverlapSphere(groundCheckTransform.position, 0.1f).Length == 1) return;
+
+        if (!_jumpWasPressed) return;
         
         _rigidbody.AddForce(Vector3.up * 5, ForceMode.VelocityChange);
-        jumpWasPressed = false;
+        _jumpWasPressed = false;
 
     }
 }
