@@ -5,33 +5,33 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    [SerializeField] private Camera cam;
-    [SerializeField] private Transform target;
-    [SerializeField] private float distanceToTarget = 10;
+    public float sensX;
+    public float sensY;
 
-    private Vector3 previousPosition;
+    public Transform orientation;
+
+    float xRotation;
+    float yRotation;
 
     private void Start()
     {
-        previousPosition = cam.ScreenToViewportPoint(new Vector3(450,400,0));
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    void Update()
+    private void Update()
     {
-        Vector3 newPosition = cam.ScreenToViewportPoint(Input.mousePosition);
-        Vector3 direction = previousPosition - newPosition;
-        
-        float rotationAroundYAxis = -direction.x * 180; // camera moves horizontally
-        float rotationAroundXAxis = direction.y * 180; // camera moves vertically
-        
-        cam.transform.position = target.position;
-        
-        cam.transform.Rotate(new Vector3(1, 0, 0), rotationAroundXAxis);
-        cam.transform.Rotate(new Vector3(0, 1, 0), rotationAroundYAxis, Space.World); // <— This is what makes it work!
-        
-        cam.transform.Translate(new Vector3(0, 0, -distanceToTarget));
-        
-        previousPosition = newPosition;
-        
+        // get mouse input
+        float mouseX = Input.GetAxisRaw("Mouse X") * Time.deltaTime * sensX;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * Time.deltaTime * sensY;
+
+        yRotation += mouseX;
+
+        xRotation -= mouseY;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        // rotate cam and orientation
+        transform.rotation = Quaternion.Euler(xRotation, yRotation, 0);
+        orientation.rotation = Quaternion.Euler(0, yRotation, 0);
     }
-}
+    }
