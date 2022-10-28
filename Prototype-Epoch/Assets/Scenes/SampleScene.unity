@@ -269,7 +269,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5537c4551ac173148b7de4e31358d6e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundCheckTransform: {fileID: 397322173}
+  moveSpeed: 4
+  groundDrag: 0.2
+  jumpForce: 7
+  jumpCooldown: 0.5
+  airMultiplier: 0.5
+  jumpKey: 32
+  playerHeight: 0.3
+  whatIsGround:
+    serializedVersion: 2
+    m_Bits: 2147483647
+  orientation: {fileID: 1934087393}
 --- !u!54 &153845089
 Rigidbody:
   m_ObjectHideFlags: 0
